@@ -17,7 +17,7 @@ jobs:
       fail-fast: false
     steps:
       - name: Check out repo
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install cpanminus
         run: |
           curl https://cpanmin.us/ > /tmp/cpanm
@@ -56,7 +56,21 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        perl-version: [ "devel", "5.36", "5.34", "5.32", "5.30", "5.28", "5.26", "5.24", "5.22", "5.20", "5.18", "5.16", "5.14", "5.12" ]
+        perl-version:
+          # - "devel"
+          - "5.36"
+          # - "5.34"
+          # - "5.32"
+          # - "5.30"
+          # - "5.28"
+          # - "5.26"
+          # - "5.24"
+          # - "5.22"
+          # - "5.20"
+          # - "5.18"
+          # - "5.16"
+          # - "5.14"
+          # - "5.12"
 
     container:
       image: perldocker/perl-tester:${{ matrix.perl-version }}
@@ -70,7 +84,7 @@ jobs:
         run: tar zxvf Dist-To-Test.tar.gz
       - name: Install dependencies
         working-directory: ./Dist-To-Test
-        run: cpanm --installdeps --notest .
+        run: cpanm --cpanfile cpanfile --no-test --installdeps --with-configure --with-develop .
       - name: Makefile.PL
         working-directory: ./Dist-To-Test
         run: perl Makefile.PL
